@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,9 +44,10 @@ public class GestionProjectService implements IGestionProjectService
         if(project.getSprints() != null){
             repositoryProject.saveAndFlush(project) ;//manger entity he have a refence in data base
             project.getSprints().forEach(sprint -> sprint.setProjectSprint(project));
-            return  project;
+
         }
-        return  null ;
+        return repositoryProject.save(project);
+
     }
 
     @Override
@@ -59,12 +61,11 @@ public class GestionProjectService implements IGestionProjectService
         Project project  = repositoryProject.findById(idProject).orElse(null);
         User user = repositoryUser.findById(idUser).orElse(null);
 
-        Assert.isNull(project,"this project is null");
-        Assert.isNull(user,"this user is null");
-
-        user.getProjects().add(project);
-        repositoryUser.saveAndFlush(user);
-
+        //Assert.isNull(project,"this project is null");
+        //Assert.isNull(user,"this user is null");
+        List<Project> projetList = new ArrayList<>();
+        projetList.add(project);
+        user.setProjects(projetList);
     }
     @Transactional
     @Override
@@ -99,11 +100,10 @@ public class GestionProjectService implements IGestionProjectService
         Assert.isNull(sprint,"this sprint is null");
 
         repositorySprint.saveAndFlush(sprint);
-        sprint.setProjectSprint(project);
         project.getSprints().add(sprint);
 
     }
-    @Scheduled(cron = "*/30 * * * * *")
+   // @Scheduled(cron = "*/30 * * * * *")
     @Override
     public void getNbrSprintByCurrentProject() {
       this.getAllCurrentProject()

@@ -25,7 +25,7 @@ public class Project {
     @OneToMany(mappedBy = "projectSprint" , cascade = CascadeType.ALL)
     private List<Sprint> sprints ;
 
-    @ManyToMany(mappedBy = "projectsUser", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "projectsUser")
     @JsonIgnore
     private List<User> users;
 

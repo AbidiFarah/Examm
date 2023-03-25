@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface RepositoryUser extends JpaRepository<User,Integer> {
-    User findByFNameAndLNameAndRole(String fname , String lName ,Role role);
+    @Query("select u from User u where u.fName= ?1 and u.lName = ?2 and u.role = ?3")
+    User findByFNameAndLNameAndRole(String fname , String lName , Role role);
 }
+
