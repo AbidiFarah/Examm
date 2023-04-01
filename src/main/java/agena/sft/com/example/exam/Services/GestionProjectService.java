@@ -60,9 +60,10 @@ public class GestionProjectService implements IGestionProjectService
 
         Project project  = repositoryProject.findById(idProject).orElse(null);
         User user = repositoryUser.findById(idUser).orElse(null);
-
-        //Assert.isNull(project,"this project is null");
-        //Assert.isNull(user,"this user is null");
+        System.out.println(project.getIdProject());
+        System.out.println(user.getIdUser());
+        Assert.notNull(project,"this project is null");
+        Assert.notNull(user,"this user is null");
         List<Project> projetList = new ArrayList<>();
         projetList.add(project);
         user.setProjects(projetList);
@@ -103,7 +104,7 @@ public class GestionProjectService implements IGestionProjectService
         project.getSprints().add(sprint);
 
     }
-   // @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     @Override
     public void getNbrSprintByCurrentProject() {
       this.getAllCurrentProject()
